@@ -258,6 +258,10 @@ The following tables lists the configurable parameters of the Kafka chart and th
 | `metrics.serviceMonitor.interval`                 | Interval at which metrics should be scraped                                                                                       | `nil`                                                   |
 | `metrics.serviceMonitor.scrapeTimeout`            | Timeout after which the scrape is ended                                                                                           | `nil` (Prometheus Operator default value)               |
 | `metrics.serviceMonitor.selector`                 | ServiceMonitor selector labels                                                                                                    | `nil` (Prometheus Operator default value)               |
+| `metrics.prometheusRule.enabled`                  | if `true`, creates a Prometheus Operator ServiceMonitor (requires `metrics.kafka.enabled` or `metrics.jmx.enabled` to be `true`)  | `false`                                                 |
+| `metrics.prometheusRule.namespace`                | Namespace which Prometheus is running in                                                                                          | `monitoring`                                            |
+| `metrics.prometheusRule.additionalLabels`                 | Interval at which metrics should be scraped                                                                                       | `nil`                                                   |
+| `metrics.prometheusRule.rules`                 | Interval at which metrics should be scraped                                                                                       | `nil`                                                   |
 
 ### Zookeeper chart parameters
 

@@ -1,0 +1,25 @@
+{{- if .Values.metrics.prometheusRule.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "kafka.fullname" . }}
+{{- if .Values.metrics.prometheusRule.namespace }}
+  namespace: {{ .Values.metrics.prometheusRule.namespace }}
+{{- end }}
+  labels: {{- include "kafka.labels" . | nindent 4 }}
+  {{- if .Values.metrics.prometheusRule.additionalLabels }}
+    {{- toYaml .Values.metrics.prometheusRule.additionalLabels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.commonLabels }}
+  {{- include "kafka.tplValue" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "kafka.tplValue" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.metrics.prometheusRule.rules }}
+  groups:
+  - name: {{ template "kafka.name" . }}
+    rules: {{- toYaml .Values.metrics.prometheusRule.rules | nindent 4 }}
+{{- end }}
+{{- end }}
