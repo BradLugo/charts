@@ -876,7 +876,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: false
+    enabled: true
     ## Namespace in which Prometheus is running
     ##
     # namespace: monitoring
@@ -896,6 +896,26 @@ metrics:
     ##
     # selector:
     #   prometheus: my-prometheus
+    prometheusRule:
+      enabled: true
+
+  prometheusRule:
+    enabled: true
+    rules:
+      - alert: KafkaNoActiveControllers
+        annotations:
+          message: The number of active controllers in {{ "{{" }} $labels.namespace {{ "}}" }} is less than 1. This usually means that some of the Kafka nodes aren't communicating properly. If it doesn't resolve itself you can try killing the pods (one by one whilst monitoring the under-replicated partitions graph).
+        expr: max(kafka_controller_kafkacontroller_activecontrollercount_value) by (namespace) < 1
+        for: 5m
+        labels:
+          severity: critical
+      - alert: KafkaMultipleActiveControllers
+        annotations:
+          message: The number of active controllers in {{ "{{" }} $labels.namespace {{ "}}" }} is greater than 1. This usually means that some of the Kafka nodes aren't communicating properly. If it doesn't resolve itself you can try killing the pods (one by one whilst monitoring the under-replicated partitions graph).
+        expr: max(kafka_controller_kafkacontroller_activecontrollercount_value) by (namespace) > 1
+        for: 5m
+        labels:
+          severity: critical
 
 ##
 ## Zookeeper chart configuration

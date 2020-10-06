@@ -901,6 +901,14 @@ metrics:
     ##
     # selector:
     #   prometheus: my-prometheus
+  
+  ## Prometheus Rule configuration
+  ##
+  prometheusRule:
+    enabled: false
+    additionalLabels: {}
+    # namespace: ""
+    rules: []
 
 ##
 ## Zookeeper chart configuration
